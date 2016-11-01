@@ -14,6 +14,9 @@
 		A54A850A1DC3F2EB009046C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A54A85081DC3F2EB009046C5 /* Main.storyboard */; };
 		A54A850C1DC3F2EB009046C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A54A850B1DC3F2EB009046C5 /* Assets.xcassets */; };
 		A54A850F1DC3F2EB009046C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A54A850D1DC3F2EB009046C5 /* LaunchScreen.storyboard */; };
+		A54A85171DC8CC78009046C5 /* testParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = A54A85161DC8CC78009046C5 /* testParticle.sks */; };
+		A54A85191DC9024C009046C5 /* VectorMaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54A85181DC9024C009046C5 /* VectorMaths.swift */; };
+		A54A851B1DC908DC009046C5 /* Planet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54A851A1DC908DC009046C5 /* Planet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +29,9 @@
 		A54A850B1DC3F2EB009046C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A54A850E1DC3F2EB009046C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A54A85101DC3F2EB009046C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A54A85161DC8CC78009046C5 /* testParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = testParticle.sks; sourceTree = "<group>"; };
+		A54A85181DC9024C009046C5 /* VectorMaths.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorMaths.swift; sourceTree = "<group>"; };
+		A54A851A1DC908DC009046C5 /* Planet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Planet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +72,9 @@
 				A54A850B1DC3F2EB009046C5 /* Assets.xcassets */,
 				A54A850D1DC3F2EB009046C5 /* LaunchScreen.storyboard */,
 				A54A85101DC3F2EB009046C5 /* Info.plist */,
+				A54A85161DC8CC78009046C5 /* testParticle.sks */,
+				A54A85181DC9024C009046C5 /* VectorMaths.swift */,
+				A54A851A1DC908DC009046C5 /* Planet.swift */,
 			);
 			path = fgmmr;
 			sourceTree = "<group>";
@@ -131,6 +140,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A54A850A1DC3F2EB009046C5 /* Main.storyboard in Resources */,
+				A54A85171DC8CC78009046C5 /* testParticle.sks in Resources */,
 				A54A85011DC3F2EB009046C5 /* GameScene.sks in Resources */,
 				A54A850C1DC3F2EB009046C5 /* Assets.xcassets in Resources */,
 				A54A850F1DC3F2EB009046C5 /* LaunchScreen.storyboard in Resources */,
@@ -144,9 +154,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A54A85191DC9024C009046C5 /* VectorMaths.swift in Sources */,
 				A54A85051DC3F2EB009046C5 /* GameScene.swift in Sources */,
 				A54A85071DC3F2EB009046C5 /* GameViewController.swift in Sources */,
 				A54A84FF1DC3F2EB009046C5 /* AppDelegate.swift in Sources */,
+				A54A851B1DC908DC009046C5 /* Planet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

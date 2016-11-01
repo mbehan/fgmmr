@@ -8,118 +8,136 @@
 
 import SpriteKit
 
-let gravitationalConstant : CGFloat = 0.1
-
-func sub(a: CGPoint, b: CGPoint) -> CGPoint {
-    return CGPoint(x: a.x - b.x ,y: a.y - b.y)
-}
-
-func add(a: CGPoint, b: CGPoint) -> CGPoint {
-    return CGPoint(x: a.x + b.x ,y: a.y + b.y)
-}
-
-func mult(a: CGPoint, b: CGFloat) -> CGPoint {
-    return CGPoint(x: a.x * b ,y: a.y * b)
-}
-
-func length(a: CGPoint) -> CGFloat {
-    return sqrt(CGFloat(a.x * a.x) + CGFloat(a.y * a.y))
-}
-
-// Makes a vector have a length of 1
-func normalize(a:CGPoint)->CGPoint{
-    let l = length(a: a)
-    return CGPoint(x: a.x / l, y: a.y / l)
-}
-
-func distance(p1:CGPoint, p2:CGPoint) -> CGFloat {
-    return CGFloat(hypotf(Float(p1.x - p2.x), Float(p1.y - p2.y)))
-}
-
-class GravitationalSystem {
-    var bodies = [SKShapeNode]()
-    
-    func update(){
-        for thisBody in bodies {
-            
-            for otherBody in bodies {
-             
-               // let forceBetweenBodies =
-            }
-        }
-    }
-}
-
-struct Planet : Equatable {
-    
-    let node : SKNode
-    var position : CGPoint {
-        didSet {
-            node.position = self.position
-        }
-    }
-    
-    let mass : CGFloat
-    
-    init(mass m : CGFloat? = nil) {
-        
-        if let m = m {
-            mass = m
-        } else {
-            mass = CGFloat(arc4random_uniform(20)) + 1.0
-        }
-        let planet = SKShapeNode.init(circleOfRadius: mass/10.0)
-        let body = SKPhysicsBody(circleOfRadius: mass)
-        
-        body.affectedByGravity = false
-        body.allowsRotation = true
-        
-        planet.physicsBody = body
-        body.collisionBitMask = 0
-        
-        node = planet
-        position = node.position
-        
-        
-    }
-    
-    static func ==(lhs:Planet, rhs:Planet) -> Bool { // Implement Equatable
-        return lhs.node.position == rhs.node.position && lhs.mass == rhs.mass
-    }
-}
+let gravitationalConstant : CGFloat = 0.001
 
 class GameScene: SKScene {
     
-    var planets = [Planet]()
+    // game params
+    var centerOnLargestMass = false
+    var lineTrail = true
+    var lineTrailFadeDuration = 2.5
+    var particleTrail = false
+    var collisionThreshold = CGFloat(2)
     
-    var added2 = false
+    var planets = [Planet]()
     
     override func didMove(to view: SKView) {
         
-        let planet = Planet()
+        let planet = Planet(mass: 100)
         planets.append(planet)
         
         self.addChild(planet.node)
+        
+        let camera = SKCameraNode()
+        self.camera = camera
+        
+        self.addChild(camera)
+        
+        if particleTrail {
+            addParticleTrail(to: planet, in: self)
+        }
         
     }
     
+    func addParticleTrail(to planet:Planet, in target:SKNode) {
+        let emitter = SKEmitterNode(fileNamed: "testParticle")!
+        emitter.targetNode = target
+        planet.node.addChild(emitter)
+    }
     
+    func addTrailSegment(for planet:Planet) {
+        if let lastPosition = planet.lastPosition {
+            let path = CGMutablePath()
+            path.move(to: lastPosition)
+            path.addLine(to: planet.node.position)
+            
+            let lineSeg = SKShapeNode(path: path)
+            self.addChild(lineSeg)
+            
+            lineSeg.run(SKAction.sequence([SKAction.fadeOut(withDuration: lineTrailFadeDuration), SKAction.removeFromParent()]))
+        }
+        
+        
+        planet.lastPosition = planet.node.position
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+        // Called before each frame is rendered
+            
+        var mergedPlanets = [Planet]()
+        var newPlanets = [Planet]()
+        
+        var maxMass = CGFloat(0.0)
+            
+        for planet1 in planets {
+            
+            if lineTrail {
+                addTrailSegment(for: planet1)
+            }
+            
+            if centerOnLargestMass {
+                if planet1.mass > maxMass {
+                    maxMass = planet1.mass
+                    camera?.position = planet1.node.position
+                }
+            }
+            
+            for planet2 in planets {
+                if planet1 != planet2 {
+                    if distance(p1: planet1.node.position, p2: planet2.node.position) < collisionThreshold {
+                        mergedPlanets.append(planet1)
+                        
+                        let newPlanet = Planet.byColliding(planet1, with: planet2)
+                        
+                        if !newPlanets.contains(newPlanet) { // prevents both p1xp2 and p2xp1 being added
+                            newPlanets.append(newPlanet)
+                        }
+                    } else {
+                        Planet.applyGravitationalAttraction(between: planet1, and: planet2)
+                    }
+                }
+            }
+        }
+        
+        if mergedPlanets.count > 0 {
+            planets = planets.filter {
+                if mergedPlanets.contains($0) {
+                    $0.node.removeFromParent()
+                    return false
+                }
+                return true
+            }
+            
+            for planet in newPlanets {
+                self.addChild(planet.node)
+                planets.append(planet)
+                
+                if particleTrail {
+                    addParticleTrail(to: planet, in: self)
+                }
+            }
+        }
+    }
+    
+    // MARK:- Touch Handling
     func touchDown(atPoint pos : CGPoint) {
-        var planet = Planet()
-        planet.position = pos
+        let planet = Planet()
+        planet.node.position = pos
         
         planets.append(planet)
         self.addChild(planet.node)
         
-        added2 = true
+        if particleTrail {
+            addParticleTrail(to: planet, in: self)
+        }
     }
     
     func touchMoved(toPoint pos : CGPoint) {
-
+        
     }
     
     func touchUp(atPoint pos : CGPoint) {
-
+        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -136,92 +154,5 @@ class GameScene: SKScene {
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-    }
-    
-    
-    override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
-        
-        if added2 {
-            
-           
-            
-            func applyGravitationalForce(planet1:Planet, planet2:Planet) {
-                let offset = sub(a: planet1.node.position, b: planet2.node.position)
-                let direction = normalize(a: offset)
-                
-                let d = distance(p1: planet1.node.position, p2: planet2.node.position)
-                let force = gravitationalConstant * ((planet1.mass * planet2.mass)/d)
-                
-                let amount = mult(a: direction, b: force)
-                
-                let forceVector = CGVector(dx: amount.x, dy: amount.y)
-                
-                //print(forceVector)
-                
-                planet2.node.physicsBody?.applyForce(forceVector)
-            }
-            
-            var planetsToKill = [Planet]()
-            var planetsToAdd = [Planet]()
-            
-            for planet1 in planets {
-                for planet2 in planets {
-                    if planet1.position != planet2.position {
-                        
-                        if distance(p1: planet1.node.position, p2: planet2.node.position) < 2 {
-                            planetsToKill.append(planet1)
-                            
-                            var v1 = CGFloat((4.0 / 3.0) * M_PI)
-                            v1 = v1 * (planet1.mass * planet1.mass * planet1.mass)
-                            
-                            var v2 = CGFloat((4.0 / 3.0) * M_PI)
-                            v2 = v2 * (planet2.mass * planet2.mass * planet2.mass)
-                            
-                            let v3 = v1 + v2
-                            
-                            var newR = (v3 / CGFloat(M_PI)) * CGFloat(3.0 / 4.0)
-                            newR = pow(newR, 1.0/3.0)
-                            
-                            let reducingFactor = CGFloat(0.2)
-                            
-                            let newVelocity = CGVector(dx: reducingFactor * planet1.node.physicsBody!.velocity.dx + reducingFactor * planet2.node.physicsBody!.velocity.dx, dy: reducingFactor * planet1.node.physicsBody!.velocity.dy + reducingFactor * planet2.node.physicsBody!.velocity.dy)
-                            
-                            var newPlanet = Planet(mass: newR)
-                            newPlanet.position = CGPoint(x: (planet1.node.position.x + planet2.node.position.x) / 2.0, y:(planet1.node.position.y + planet2.node.position.y) / 2.0)
-                            
-                            newPlanet.node.physicsBody?.velocity = newVelocity
-                            
-                            if !planetsToAdd.contains(newPlanet) {
-                                planetsToAdd.append(newPlanet)
-                            }
-                            
-                            
-                        } else {
-                        
-                            applyGravitationalForce(planet1: planet1, planet2: planet2)
-                        }
-                    }
-                }
-            }
-            
-            if planetsToKill.count > 0 {
-            
-                planets = planets.filter {
-                    if planetsToKill.contains($0) {
-                        $0.node.removeFromParent()
-                        return false
-                    }
-                    return true
-                }
-                
-                
-                for planet in planetsToAdd {
-                    self.addChild(planet.node)
-                    planets.append(planet)
-                }
-                
-            }
-        }
     }
 }
