@@ -8,8 +8,6 @@
 
 import SpriteKit
 
-let gravitationalConstant : CGFloat = 0.001
-
 class GameScene: SKScene {
     
     // game params
@@ -37,6 +35,21 @@ class GameScene: SKScene {
             addParticleTrail(to: planet, in: self)
         }
         
+        let pinchy = UIPinchGestureRecognizer()
+        pinchy.addTarget(self, action: #selector(handlePinch(gesture:)))
+        self.view?.addGestureRecognizer(pinchy)
+    }
+    
+    var cameraScaleAtStartOfPinch = CGFloat(1.0)
+    
+    func handlePinch(gesture:UIPinchGestureRecognizer){
+        
+        switch gesture.state {
+        case .began:
+            cameraScaleAtStartOfPinch = self.camera!.xScale
+        default:
+            self.camera!.setScale((1.0 / gesture.scale) * cameraScaleAtStartOfPinch)
+        }
     }
     
     func addParticleTrail(to planet:Planet, in target:SKNode) {

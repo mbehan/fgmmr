@@ -8,6 +8,8 @@
 
 import SpriteKit
 
+let gravitationalConstant : CGFloat = 0.001
+
 class Planet : Equatable {
     
     let mass : CGFloat
