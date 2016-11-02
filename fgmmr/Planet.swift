@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-let gravitationalConstant : CGFloat = 0.001
+let gravitationalConstant : CGFloat = 100.0
 
 class Planet : Equatable {
     
@@ -35,7 +35,7 @@ class Planet : Equatable {
         let radius = mass/10.0
         let planet = SKShapeNode.init(circleOfRadius: radius)
         let body = SKPhysicsBody(circleOfRadius: radius)
-        
+        body.mass = mass
         body.affectedByGravity = false //heh
         body.allowsRotation = false
         
@@ -84,7 +84,7 @@ class Planet : Equatable {
         let direction = normalize(a: offset)
         
         let d = distance(p1: planet1.node.position, p2: planet2.node.position)
-        let force = gravitationalConstant * ((planet1.mass * planet2.mass) / d )
+        let force = gravitationalConstant * ((planet1.mass * planet2.mass) / (d) )
         
         let amount = mult(a: direction, b: force)
         

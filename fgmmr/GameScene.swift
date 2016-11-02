@@ -11,7 +11,7 @@ import SpriteKit
 class GameScene: SKScene {
     
     // game params
-    var centerOnLargestMass = false
+    var centerOnLargestMass = true
     var lineTrail = true
     var lineTrailFadeDuration = 2.5
     var particleTrail = false
@@ -132,9 +132,24 @@ class GameScene: SKScene {
         }
     }
     
+    var timeAtTouchDown = Date.timeIntervalSinceReferenceDate
+    var locationOfTouchDown = CGPoint()
+    
     // MARK:- Touch Handling
     func touchDown(atPoint pos : CGPoint) {
-        let planet = Planet()
+        timeAtTouchDown = Date.timeIntervalSinceReferenceDate
+        locationOfTouchDown = pos
+    }
+    
+    func touchMoved(toPoint pos : CGPoint) {
+        
+    }
+    
+    func touchUp(atPoint pos : CGPoint) {
+        let durationOfPress = Date.timeIntervalSinceReferenceDate - timeAtTouchDown
+        let massOfNewPlanet = CGFloat(durationOfPress * 50.0)
+        
+        let planet = Planet(mass:massOfNewPlanet)
         planet.node.position = pos
         
         planets.append(planet)
@@ -143,14 +158,10 @@ class GameScene: SKScene {
         if particleTrail {
             addParticleTrail(to: planet, in: self)
         }
-    }
-    
-    func touchMoved(toPoint pos : CGPoint) {
         
-    }
-    
-    func touchUp(atPoint pos : CGPoint) {
+        let panVector = sub(a: locationOfTouchDown, b: pos)
         
+        planet.node.physicsBody?.velocity = CGVector(dx:panVector.x,dy:panVector.y)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
