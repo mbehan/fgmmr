@@ -10,7 +10,11 @@ import SpriteKit
 
 let gravitationalConstant : CGFloat = 100.0
 
+//srand48(Int(arc4random()));
+
 class Planet : Equatable {
+    
+    let color = UIColor(red: CGFloat(drand48()), green: CGFloat(drand48()), blue: CGFloat(drand48()), alpha: 1.0)
     
     let mass : CGFloat
     let node : SKNode
@@ -28,7 +32,7 @@ class Planet : Equatable {
     init(mass m : CGFloat? = nil) {
         
         if let m = m {
-            mass = m
+            mass = max(1.0,m)
         } else {
             mass = CGFloat(arc4random_uniform(20)) + 1.0
         }
@@ -41,6 +45,8 @@ class Planet : Equatable {
         
         planet.physicsBody = body
         body.collisionBitMask = 0
+        
+        planet.fillColor = self.color
         
         node = planet
     }

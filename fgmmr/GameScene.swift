@@ -11,7 +11,7 @@ import SpriteKit
 class GameScene: SKScene {
     
     // game params
-    var centerOnLargestMass = true
+    var centerOnLargestMass = false
     var lineTrail = true
     var lineTrailFadeDuration = 2.5
     var particleTrail = false
@@ -65,6 +65,8 @@ class GameScene: SKScene {
             path.addLine(to: planet.node.position)
             
             let lineSeg = SKShapeNode(path: path)
+            lineSeg.strokeColor = planet.color
+            lineSeg.fillColor = planet.color
             self.addChild(lineSeg)
             
             lineSeg.run(SKAction.sequence([SKAction.fadeOut(withDuration: lineTrailFadeDuration), SKAction.removeFromParent()]))
