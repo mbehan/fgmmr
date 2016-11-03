@@ -125,6 +125,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     
     var timeAtTouchDown = Date.timeIntervalSinceReferenceDate
     var locationOfTouchDown = CGPoint()
+    var placerLine : SKShapeNode?
     
     func handleNewPlanetPan(gesture: UIPanGestureRecognizer) {
         
@@ -135,6 +136,21 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         case .began:
             timeAtTouchDown = Date.timeIntervalSinceReferenceDate
             locationOfTouchDown = touchLocation
+            
+        case .changed:
+            if placerLine != nil {
+                placerLine!.removeFromParent()
+                placerLine = nil
+            }
+            
+            let placementPath = CGMutablePath()
+            placementPath.move(to: locationOfTouchDown)
+            placementPath.addLine(to: touchLocation)
+            
+            placerLine = SKShapeNode(path: placementPath)
+            placerLine!.alpha = 0.5
+            self.addChild(placerLine!)
+            
         case .ended, .failed:
             let durationOfPress = Date.timeIntervalSinceReferenceDate - timeAtTouchDown
             let radiusOfNewPlanet = CGFloat(durationOfPress * 5.0)
@@ -149,6 +165,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
             let panVector = sub(a: locationOfTouchDown, b: touchLocation)
             
             planet.node.physicsBody?.velocity = CGVector(dx:panVector.x,dy:panVector.y)
+            
+            placerLine!.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.3),SKAction.removeFromParent()]))
             
         default: break
         }
