@@ -21,7 +21,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     
     override func didMove(to view: SKView) {
         
-        let planet = Planet(mass: 100)
+        let planet = Planet(radius: 10)
         planets.append(planet)
         self.addChild(planet.node)
         
@@ -137,12 +137,13 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
             locationOfTouchDown = touchLocation
         case .ended, .failed:
             let durationOfPress = Date.timeIntervalSinceReferenceDate - timeAtTouchDown
-            let massOfNewPlanet = CGFloat(durationOfPress * 50.0)
+            let radiusOfNewPlanet = CGFloat(durationOfPress * 5.0)
             
-            let planet = Planet(mass:massOfNewPlanet)
+            let planet = Planet(radius:radiusOfNewPlanet)
             planet.node.position = touchLocation
             
             planets.append(planet)
+            
             self.addChild(planet.node)
             
             let panVector = sub(a: locationOfTouchDown, b: touchLocation)

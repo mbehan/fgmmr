@@ -11,8 +11,6 @@ import SpriteKit
 class Planet : Equatable {
     
     let color = UIColor(red: CGFloat(drand48()), green: CGFloat(drand48()), blue: CGFloat(drand48()), alpha: 1.0)
-    
-    let mass : CGFloat
     let node : SKNode
     
     /// A planet's position is its node's position
@@ -22,20 +20,21 @@ class Planet : Equatable {
         }
     }
     
+    // From its node's physics body
+    var mass : CGFloat {
+        get {
+            return node.physicsBody!.mass
+        }
+    }
+    
     /// Use to store the planet's last recorded position
     var lastPosition : CGPoint?
     
-    init(mass m : CGFloat? = nil) {
-        
-        if let m = m {
-            mass = max(1.0,m)
-        } else {
-            mass = CGFloat(arc4random_uniform(20)) + 1.0
-        }
-        let radius = mass/10.0
-        let planet = SKShapeNode.init(circleOfRadius: radius)
-        let body = SKPhysicsBody(circleOfRadius: radius)
-        body.mass = mass
+    init(radius : CGFloat) {
+        let safeRadius = max(0.5,radius)
+        let planet = SKShapeNode.init(circleOfRadius: safeRadius)
+        let body = SKPhysicsBody(circleOfRadius: safeRadius)
+        body.mass = radius * 10.0
         body.affectedByGravity = false //heh
         body.allowsRotation = false
         
@@ -65,7 +64,7 @@ class Planet : Equatable {
         
         let newVelocity = CGVector(dx: p1Factor * p1Velocity.dx + p2Factor * p2Velocity.dx, dy: p1Factor * p1Velocity.dy + p2Factor * p2Velocity.dy)
         
-        let newPlanet = Planet(mass: newRadius * 10.0)
+        let newPlanet = Planet(radius: newRadius)
         newPlanet.node.position = CGPoint(x: (planet1.node.position.x + planet2.node.position.x) / 2.0, y:(planet1.node.position.y + planet2.node.position.y) / 2.0)
         
         newPlanet.node.physicsBody?.velocity = newVelocity
