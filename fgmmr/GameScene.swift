@@ -8,14 +8,14 @@
 
 import SpriteKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, UIGestureRecognizerDelegate {
     
     // game params
     var centerOnLargestMass = false
     var lineTrail = true
     var lineTrailFadeDuration = 2.5
-    var particleTrail = false
     var collisionThreshold = CGFloat(2)
+    let newPlanetPan = UIPanGestureRecognizer()
     
     var planets = [Planet]()
     
@@ -31,25 +31,95 @@ class GameScene: SKScene {
         
         self.addChild(camera)
         
-        if particleTrail {
-            addParticleTrail(to: planet, in: self)
-        }
         
+        //set up gesture recognizers
         let pinchy = UIPinchGestureRecognizer()
         pinchy.addTarget(self, action: #selector(handlePinch(gesture:)))
         self.view?.addGestureRecognizer(pinchy)
+        
+        let panny = UIPanGestureRecognizer()
+        panny.maximumNumberOfTouches = 2
+        panny.minimumNumberOfTouches = 2
+        panny.addTarget(self, action: #selector(handlePan(gesture:)))
+        self.view?.addGestureRecognizer(panny)
+        
+        newPlanetPan.maximumNumberOfTouches = 1
+        newPlanetPan.addTarget(self, action: #selector(handleNewPlanetPan(gesture:)))
+        self.view?.addGestureRecognizer(newPlanetPan)
+        
+        newPlanetPan.delegate = self
+        panny.delegate = self
+        pinchy.delegate = self
+    }
+    
+    var timeAtTouchDown = Date.timeIntervalSinceReferenceDate
+    var locationOfTouchDown = CGPoint()
+    
+    func handleNewPlanetPan(gesture: UIPanGestureRecognizer) {
+        
+        var touchLocation = gesture.location(in: gesture.view)
+        touchLocation = self.convertPoint(fromView: touchLocation)
+        
+        switch gesture.state {
+        case .began:
+            timeAtTouchDown = Date.timeIntervalSinceReferenceDate
+            locationOfTouchDown = touchLocation
+        case .ended, .failed:
+            let durationOfPress = Date.timeIntervalSinceReferenceDate - timeAtTouchDown
+            let massOfNewPlanet = CGFloat(durationOfPress * 50.0)
+            
+            let planet = Planet(mass:massOfNewPlanet)
+            planet.node.position = touchLocation
+            
+            planets.append(planet)
+            self.addChild(planet.node)
+            
+            let panVector = sub(a: locationOfTouchDown, b: touchLocation)
+            
+            planet.node.physicsBody?.velocity = CGVector(dx:panVector.x,dy:panVector.y)
+            
+        default: break
+        }
+        
     }
     
     var cameraScaleAtStartOfPinch = CGFloat(1.0)
     
     func handlePinch(gesture:UIPinchGestureRecognizer){
-        
         switch gesture.state {
         case .began:
             cameraScaleAtStartOfPinch = self.camera!.xScale
         default:
             self.camera!.setScale((1.0 / gesture.scale) * cameraScaleAtStartOfPinch)
         }
+    }
+    
+    func handlePan(gesture:UIPanGestureRecognizer){
+        
+        if gesture.state == .changed {
+        
+            var touchLocation = gesture.location(in: gesture.view)
+            touchLocation = self.convertPoint(fromView: touchLocation)
+            
+            var translation = gesture.translation(in: gesture.view!)
+            translation = CGPoint(x: -translation.x, y: translation.y)
+            
+            let position = self.camera!.position
+            
+            self.camera!.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+            
+            gesture.setTranslation(CGPoint(), in: gesture.view)
+            
+        }
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        
+        if gestureRecognizer == newPlanetPan || otherGestureRecognizer == newPlanetPan {
+            return false
+        }
+        
+        return true
     }
     
     func addParticleTrail(to planet:Planet, in target:SKNode) {
@@ -126,59 +196,7 @@ class GameScene: SKScene {
             for planet in newPlanets {
                 self.addChild(planet.node)
                 planets.append(planet)
-                
-                if particleTrail {
-                    addParticleTrail(to: planet, in: self)
-                }
             }
         }
-    }
-    
-    var timeAtTouchDown = Date.timeIntervalSinceReferenceDate
-    var locationOfTouchDown = CGPoint()
-    
-    // MARK:- Touch Handling
-    func touchDown(atPoint pos : CGPoint) {
-        timeAtTouchDown = Date.timeIntervalSinceReferenceDate
-        locationOfTouchDown = pos
-    }
-    
-    func touchMoved(toPoint pos : CGPoint) {
-        
-    }
-    
-    func touchUp(atPoint pos : CGPoint) {
-        let durationOfPress = Date.timeIntervalSinceReferenceDate - timeAtTouchDown
-        let massOfNewPlanet = CGFloat(durationOfPress * 50.0)
-        
-        let planet = Planet(mass:massOfNewPlanet)
-        planet.node.position = pos
-        
-        planets.append(planet)
-        self.addChild(planet.node)
-        
-        if particleTrail {
-            addParticleTrail(to: planet, in: self)
-        }
-        
-        let panVector = sub(a: locationOfTouchDown, b: pos)
-        
-        planet.node.physicsBody?.velocity = CGVector(dx:panVector.x,dy:panVector.y)
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
-    }
-    
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-    }
-    
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
     }
 }
