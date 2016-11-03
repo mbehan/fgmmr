@@ -23,14 +23,12 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         
         let planet = Planet(mass: 100)
         planets.append(planet)
-        
         self.addChild(planet.node)
         
         let camera = SKCameraNode()
         self.camera = camera
         
         self.addChild(camera)
-        
         
         //set up gesture recognizers
         let pinchy = UIPinchGestureRecognizer()
@@ -51,6 +49,79 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         panny.delegate = self
         pinchy.delegate = self
     }
+    
+    // Called before each frame is rendered
+    override func update(_ currentTime: TimeInterval) {
+        var mergedPlanets = [Planet]()
+        var newPlanets = [Planet]()
+        
+        var maxMass = CGFloat(0.0)
+        
+        for planet1 in planets {
+            
+            if lineTrail {
+                addTrailSegment(for: planet1)
+            }
+            
+            if centerOnLargestMass {
+                if planet1.mass > maxMass {
+                    maxMass = planet1.mass
+                    camera?.position = planet1.node.position
+                }
+            }
+            
+            for planet2 in planets {
+                if planet1 != planet2 {
+                    if distance(p1: planet1.node.position, p2: planet2.node.position) < collisionThreshold {
+                        mergedPlanets.append(planet1)
+                        
+                        let newPlanet = Planet.byColliding(planet1, with: planet2)
+                        
+                        if !newPlanets.contains(newPlanet) { // prevents both p1xp2 and p2xp1 being added
+                            newPlanets.append(newPlanet)
+                        }
+                    } else {
+                        Planet.applyGravitationalAttraction(between: planet1, and: planet2)
+                    }
+                }
+            }
+        }
+        
+        if mergedPlanets.count > 0 {
+            planets = planets.filter {
+                if mergedPlanets.contains($0) {
+                    $0.node.removeFromParent()
+                    return false
+                }
+                return true
+            }
+            
+            for planet in newPlanets {
+                self.addChild(planet.node)
+                planets.append(planet)
+            }
+        }
+    }
+    
+    func addTrailSegment(for planet:Planet) {
+        if let lastPosition = planet.lastPosition {
+            let path = CGMutablePath()
+            path.move(to: lastPosition)
+            path.addLine(to: planet.node.position)
+            
+            let lineSeg = SKShapeNode(path: path)
+            lineSeg.strokeColor = planet.color
+            lineSeg.fillColor = planet.color
+            self.addChild(lineSeg)
+            
+            lineSeg.run(SKAction.sequence([SKAction.fadeOut(withDuration: lineTrailFadeDuration), SKAction.removeFromParent()]))
+        }
+        
+        planet.lastPosition = planet.node.position
+    }
+
+    
+    // MARK:- Touch Handling
     
     var timeAtTouchDown = Date.timeIntervalSinceReferenceDate
     var locationOfTouchDown = CGPoint()
@@ -113,6 +184,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         }
     }
     
+    // MARK:- Gesture Recognizer Delegate
+    
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         
         if gestureRecognizer == newPlanetPan || otherGestureRecognizer == newPlanetPan {
@@ -120,83 +193,5 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         }
         
         return true
-    }
-    
-    func addParticleTrail(to planet:Planet, in target:SKNode) {
-        let emitter = SKEmitterNode(fileNamed: "testParticle")!
-        emitter.targetNode = target
-        planet.node.addChild(emitter)
-    }
-    
-    func addTrailSegment(for planet:Planet) {
-        if let lastPosition = planet.lastPosition {
-            let path = CGMutablePath()
-            path.move(to: lastPosition)
-            path.addLine(to: planet.node.position)
-            
-            let lineSeg = SKShapeNode(path: path)
-            lineSeg.strokeColor = planet.color
-            lineSeg.fillColor = planet.color
-            self.addChild(lineSeg)
-            
-            lineSeg.run(SKAction.sequence([SKAction.fadeOut(withDuration: lineTrailFadeDuration), SKAction.removeFromParent()]))
-        }
-        
-        
-        planet.lastPosition = planet.node.position
-    }
-    
-    override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
-            
-        var mergedPlanets = [Planet]()
-        var newPlanets = [Planet]()
-        
-        var maxMass = CGFloat(0.0)
-            
-        for planet1 in planets {
-            
-            if lineTrail {
-                addTrailSegment(for: planet1)
-            }
-            
-            if centerOnLargestMass {
-                if planet1.mass > maxMass {
-                    maxMass = planet1.mass
-                    camera?.position = planet1.node.position
-                }
-            }
-            
-            for planet2 in planets {
-                if planet1 != planet2 {
-                    if distance(p1: planet1.node.position, p2: planet2.node.position) < collisionThreshold {
-                        mergedPlanets.append(planet1)
-                        
-                        let newPlanet = Planet.byColliding(planet1, with: planet2)
-                        
-                        if !newPlanets.contains(newPlanet) { // prevents both p1xp2 and p2xp1 being added
-                            newPlanets.append(newPlanet)
-                        }
-                    } else {
-                        Planet.applyGravitationalAttraction(between: planet1, and: planet2)
-                    }
-                }
-            }
-        }
-        
-        if mergedPlanets.count > 0 {
-            planets = planets.filter {
-                if mergedPlanets.contains($0) {
-                    $0.node.removeFromParent()
-                    return false
-                }
-                return true
-            }
-            
-            for planet in newPlanets {
-                self.addChild(planet.node)
-                planets.append(planet)
-            }
-        }
     }
 }

@@ -10,8 +10,6 @@ import SpriteKit
 
 let gravitationalConstant : CGFloat = 100.0
 
-//srand48(Int(arc4random()));
-
 class Planet : Equatable {
     
     let color = UIColor(red: CGFloat(drand48()), green: CGFloat(drand48()), blue: CGFloat(drand48()), alpha: 1.0)

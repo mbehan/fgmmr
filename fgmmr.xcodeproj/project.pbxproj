@@ -63,17 +63,25 @@
 			isa = PBXGroup;
 			children = (
 				A54A84FE1DC3F2EB009046C5 /* AppDelegate.swift */,
-				A54A85001DC3F2EB009046C5 /* GameScene.sks */,
-				A54A85041DC3F2EB009046C5 /* GameScene.swift */,
 				A54A85061DC3F2EB009046C5 /* GameViewController.swift */,
+				A54A85041DC3F2EB009046C5 /* GameScene.swift */,
+				A54A851A1DC908DC009046C5 /* Planet.swift */,
+				A54A85181DC9024C009046C5 /* VectorMaths.swift */,
+				A54A851C1DCB74F9009046C5 /* resources */,
+			);
+			path = fgmmr;
+			sourceTree = "<group>";
+		};
+		A54A851C1DCB74F9009046C5 /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				A54A85101DC3F2EB009046C5 /* Info.plist */,
 				A54A85081DC3F2EB009046C5 /* Main.storyboard */,
 				A54A850B1DC3F2EB009046C5 /* Assets.xcassets */,
 				A54A850D1DC3F2EB009046C5 /* LaunchScreen.storyboard */,
-				A54A85101DC3F2EB009046C5 /* Info.plist */,
-				A54A85181DC9024C009046C5 /* VectorMaths.swift */,
-				A54A851A1DC908DC009046C5 /* Planet.swift */,
+				A54A85001DC3F2EB009046C5 /* GameScene.sks */,
 			);
-			path = fgmmr;
+			name = resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
