@@ -8,8 +8,6 @@
 
 import SpriteKit
 
-let gravitationalConstant : CGFloat = 100.0
-
 class Planet : Equatable {
     
     let color = UIColor(red: CGFloat(drand48()), green: CGFloat(drand48()), blue: CGFloat(drand48()), alpha: 1.0)
@@ -84,11 +82,12 @@ class Planet : Equatable {
     }
     
     class func applyGravitationalAttraction(between planet1:Planet, and planet2:Planet) {
+        let gravitationalConstant : CGFloat = 100.0 // is really 6.67408 × 10^-11, but then we'd need awfully large numbers for mass
         let offset = sub(a: planet1.node.position, b: planet2.node.position)
         let direction = normalize(a: offset)
         
         let d = distance(p1: planet1.node.position, p2: planet2.node.position)
-        let force = gravitationalConstant * ((planet1.mass * planet2.mass) / (d) )
+        let force = gravitationalConstant * ((planet1.mass * planet2.mass) / (d) ) //in real life we'd divide by d^2, but that was making it less fun / harder to make stable systems. Prob just need to tweak other stuff to get it just right
         
         let amount = mult(a: direction, b: force)
         
@@ -97,7 +96,6 @@ class Planet : Equatable {
         
         planet2.node.physicsBody?.applyForce(forceVector)
     }
-    
     
     //MARK:- Equatable
     static func ==(lhs:Planet, rhs:Planet) -> Bool {
