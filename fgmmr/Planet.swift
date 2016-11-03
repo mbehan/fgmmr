@@ -48,23 +48,15 @@ class Planet : Equatable {
     }
     
     class func byColliding(_ planet1 : Planet, with planet2 : Planet) -> Planet {
-        //calcs over multiple lines because Swift
-        var vol1 = CGFloat((4.0 / 3.0) * M_PI)
-        vol1 = vol1 * (planet1.mass * planet1.mass * planet1.mass)
         
-        var vol2 = CGFloat((4.0 / 3.0) * M_PI)
-        vol2 = vol2 * (planet2.mass * planet2.mass * planet2.mass)
-        
-        let vol3 = vol1 + vol2
-        
-        var newMass = (vol3 / CGFloat(M_PI)) * CGFloat(3.0 / 4.0)
-        newMass = pow(newMass, 1.0/3.0)
-        
-        let reducingFactor = CGFloat(0.01) // the momentum that is lost in the collision
-        
+        //calc the combined raduis by adding the volumes of the planets
+        let r1 = planet1.mass / 10.0
+        let r2 = planet2.mass / 10.0
+        let newRadius = pow(pow(r1,3) + pow(r2,3), 1/3.0)
+
         let p1Mass = planet1.mass
         let p2Mass = planet2.mass
-        
+        let reducingFactor = CGFloat(0.01) // lose a chunk of momentum in the collision
         let p1Factor = p1Mass * reducingFactor
         let p2Factor = p2Mass * reducingFactor
         
@@ -73,7 +65,7 @@ class Planet : Equatable {
         
         let newVelocity = CGVector(dx: p1Factor * p1Velocity.dx + p2Factor * p2Velocity.dx, dy: p1Factor * p1Velocity.dy + p2Factor * p2Velocity.dy)
         
-        let newPlanet = Planet(mass: newMass)
+        let newPlanet = Planet(mass: newRadius * 10.0)
         newPlanet.node.position = CGPoint(x: (planet1.node.position.x + planet2.node.position.x) / 2.0, y:(planet1.node.position.y + planet2.node.position.y) / 2.0)
         
         newPlanet.node.physicsBody?.velocity = newVelocity
@@ -82,7 +74,7 @@ class Planet : Equatable {
     }
     
     class func applyGravitationalAttraction(between planet1:Planet, and planet2:Planet) {
-        let gravitationalConstant : CGFloat = 100.0 // is really 6.67408 × 10^-11, but then we'd need awfully large numbers for mass
+        let gravitationalConstant : CGFloat = 100.0 // is really 6.67408 × 10^-11, but then we'd need awfully large numbers for mass and then the distances would be way off ...
         let offset = sub(a: planet1.node.position, b: planet2.node.position)
         let direction = normalize(a: offset)
         
