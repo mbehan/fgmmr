@@ -20,7 +20,7 @@ class Planet : Equatable {
         }
     }
     
-    // From its node's physics body
+    /// From its node's physics body
     var mass : CGFloat {
         get {
             return node.physicsBody!.mass
