@@ -55,6 +55,12 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         if let camera = camera, let largest = gravitySystem.largestMass, centerOnLargestMass {
             camera.position = largest.position
         }
+        
+        // if we're mid new planet placement, update the indication of the new planet size
+        if let placerLine = placerLine {
+            let durationOfPress = Date.timeIntervalSinceReferenceDate - timeAtTouchDown
+            placerLine.lineWidth = CGFloat(durationOfPress)
+        }
     }
 
     
@@ -84,6 +90,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
             placementPath.addLine(to: touchLocation)
             
             placerLine = SKShapeNode(path: placementPath)
+            placerLine!.lineCap = .round
             placerLine!.alpha = 0.5
             self.addChild(placerLine!)
             
