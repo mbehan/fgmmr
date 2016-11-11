@@ -12,10 +12,13 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
 
     var centerOnLargestMass = false
     
-    let newPlanetPan = UIPanGestureRecognizer()
+    let newPlanetPan = ForcePanGestureRecognizer()
     let gravitySystem = GravitySystem()
+    var forceTouch = false
     
     override func didMove(to view: SKView) {
+        
+        forceTouch = view.traitCollection.forceTouchCapability == .available
         
         self.addChild(gravitySystem)
         
@@ -57,7 +60,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         }
         
         // if we're mid new planet placement, update the indication of the new planet size
-        if let placerLine = placerLine {
+        if let placerLine = placerLine, !forceTouch {
             let durationOfPress = Date.timeIntervalSinceReferenceDate - timeAtTouchDown
             placerLine.lineWidth = CGFloat(durationOfPress)
         }
@@ -69,7 +72,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     var locationOfTouchDown = CGPoint()
     var placerLine : SKShapeNode?
     
-    func handleNewPlanetPan(gesture: UIPanGestureRecognizer) {
+    func handleNewPlanetPan(gesture: ForcePanGestureRecognizer) {
         
         var touchLocation = gesture.location(in: gesture.view)
         touchLocation = self.convertPoint(fromView: touchLocation)
@@ -94,9 +97,13 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
             placerLine!.alpha = 0.5
             self.addChild(placerLine!)
             
+            if forceTouch {
+                placerLine!.lineWidth = gesture.maxForce
+            }
+            
         case .ended, .failed:
             let durationOfPress = Date.timeIntervalSinceReferenceDate - timeAtTouchDown
-            let radiusOfNewPlanet = CGFloat(durationOfPress * 5.0)
+            let radiusOfNewPlanet = forceTouch ? (gesture.maxForce * 5.0) : CGFloat(durationOfPress * 5.0)
             
             let planet = Planet(radius:radiusOfNewPlanet)
             planet.node.position = touchLocation
