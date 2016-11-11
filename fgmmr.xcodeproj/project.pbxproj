@@ -16,6 +16,7 @@
 		A54A850F1DC3F2EB009046C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A54A850D1DC3F2EB009046C5 /* LaunchScreen.storyboard */; };
 		A54A85191DC9024C009046C5 /* VectorMaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54A85181DC9024C009046C5 /* VectorMaths.swift */; };
 		A54A851B1DC908DC009046C5 /* Planet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54A851A1DC908DC009046C5 /* Planet.swift */; };
+		A5622F671DD66E20008B409E /* GravitySystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5622F661DD66E20008B409E /* GravitySystem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		A54A85101DC3F2EB009046C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A54A85181DC9024C009046C5 /* VectorMaths.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorMaths.swift; sourceTree = "<group>"; };
 		A54A851A1DC908DC009046C5 /* Planet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Planet.swift; sourceTree = "<group>"; };
+		A5622F661DD66E20008B409E /* GravitySystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravitySystem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,8 +66,9 @@
 			children = (
 				A54A84FE1DC3F2EB009046C5 /* AppDelegate.swift */,
 				A54A85061DC3F2EB009046C5 /* GameViewController.swift */,
-				A54A85041DC3F2EB009046C5 /* GameScene.swift */,
 				A54A851A1DC908DC009046C5 /* Planet.swift */,
+				A5622F661DD66E20008B409E /* GravitySystem.swift */,
+				A54A85041DC3F2EB009046C5 /* GameScene.swift */,
 				A54A85181DC9024C009046C5 /* VectorMaths.swift */,
 				A54A851C1DCB74F9009046C5 /* resources */,
 			);
@@ -161,6 +164,7 @@
 				A54A85191DC9024C009046C5 /* VectorMaths.swift in Sources */,
 				A54A85051DC3F2EB009046C5 /* GameScene.swift in Sources */,
 				A54A85071DC3F2EB009046C5 /* GameViewController.swift in Sources */,
+				A5622F671DD66E20008B409E /* GravitySystem.swift in Sources */,
 				A54A84FF1DC3F2EB009046C5 /* AppDelegate.swift in Sources */,
 				A54A851B1DC908DC009046C5 /* Planet.swift in Sources */,
 			);

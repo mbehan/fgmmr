@@ -9,21 +9,18 @@
 import SpriteKit
 
 class GameScene: SKScene, UIGestureRecognizerDelegate {
-    
-    // game params
+
     var centerOnLargestMass = false
-    var lineTrail = true
-    var lineTrailFadeDuration = 2.5
-    var collisionThreshold = CGFloat(2)
-    let newPlanetPan = UIPanGestureRecognizer()
     
-    var planets = [Planet]()
+    let newPlanetPan = UIPanGestureRecognizer()
+    let gravitySystem = GravitySystem()
     
     override func didMove(to view: SKView) {
         
+        self.addChild(gravitySystem)
+        
         let planet = Planet(radius: 10)
-        planets.append(planet)
-        self.addChild(planet.node)
+        gravitySystem.add(planet: planet)
         
         let camera = SKCameraNode()
         self.camera = camera
@@ -52,77 +49,16 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     
     // Called before each frame is rendered
     override func update(_ currentTime: TimeInterval) {
-        var mergedPlanets = [Planet]()
-        var newPlanets = [Planet]()
         
-        var maxMass = CGFloat(0.0)
+        gravitySystem.update()
         
-        for planet1 in planets {
-            
-            if lineTrail {
-                addTrailSegment(for: planet1)
-            }
-            
-            if centerOnLargestMass {
-                if planet1.mass > maxMass {
-                    maxMass = planet1.mass
-                    camera?.position = planet1.node.position
-                }
-            }
-            
-            for planet2 in planets {
-                if planet1 != planet2 {
-                    if distance(p1: planet1.node.position, p2: planet2.node.position) < collisionThreshold {
-                        mergedPlanets.append(planet1)
-                        
-                        let newPlanet = Planet.byColliding(planet1, with: planet2)
-                        
-                        if !newPlanets.contains(newPlanet) { // prevents both p1xp2 and p2xp1 being added
-                            newPlanets.append(newPlanet)
-                        }
-                    } else {
-                        Planet.applyGravitationalAttraction(between: planet1, and: planet2)
-                    }
-                }
-            }
+        if let camera = camera, let largest = gravitySystem.largestMass, centerOnLargestMass {
+            camera.position = largest.position
         }
-        
-        if mergedPlanets.count > 0 {
-            planets = planets.filter {
-                if mergedPlanets.contains($0) {
-                    $0.node.removeFromParent()
-                    return false
-                }
-                return true
-            }
-            
-            for planet in newPlanets {
-                self.addChild(planet.node)
-                planets.append(planet)
-            }
-        }
-    }
-    
-    func addTrailSegment(for planet:Planet) {
-        if let lastPosition = planet.lastPosition {
-            let path = CGMutablePath()
-            path.move(to: lastPosition)
-            path.addLine(to: planet.node.position)
-            
-            let lineSeg = SKShapeNode(path: path)
-            lineSeg.strokeColor = planet.color
-            lineSeg.fillColor = planet.color
-            self.addChild(lineSeg)
-            
-            lineSeg.run(SKAction.sequence([SKAction.fadeOut(withDuration: lineTrailFadeDuration), SKAction.removeFromParent()]))
-        }
-        
-        planet.lastPosition = planet.node.position
     }
 
     
     // MARK:- Touch Handling
-    
     var timeAtTouchDown = Date.timeIntervalSinceReferenceDate
     var locationOfTouchDown = CGPoint()
     var placerLine : SKShapeNode?
@@ -158,9 +94,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
             let planet = Planet(radius:radiusOfNewPlanet)
             planet.node.position = touchLocation
             
-            planets.append(planet)
-            
-            self.addChild(planet.node)
+            gravitySystem.add(planet: planet)
             
             let panVector = sub(a: locationOfTouchDown, b: touchLocation)
             
