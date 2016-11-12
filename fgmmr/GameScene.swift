@@ -114,7 +114,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
             
             planet.node.physicsBody?.velocity = CGVector(dx:panVector.x,dy:panVector.y)
             
-            placerLine!.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.3),SKAction.removeFromParent()]))
+            placerLine?.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.3),SKAction.removeFromParent()]))
             
         default: break
         }
