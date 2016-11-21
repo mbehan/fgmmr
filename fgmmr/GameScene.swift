@@ -18,7 +18,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     
     override func didMove(to view: SKView) {
         
-        //forceTouch = view.traitCollection.forceTouchCapability == .available
+        forceTouch = view.traitCollection.forceTouchCapability == .available
         
         self.addChild(gravitySystem)
         

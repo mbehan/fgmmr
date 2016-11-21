@@ -9,9 +9,19 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>watchapp.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>A509A21F1DDB62C000E0BDA9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>A54A84FA1DC3F2EB009046C5</key>
 		<dict>
 			<key>primary</key>
