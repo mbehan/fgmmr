@@ -11,7 +11,7 @@ import Foundation
 
 
 class InterfaceController: WKInterfaceController, WKCrownDelegate {
-    
+        
     var scene : GameScene!
 
     @IBOutlet var skInterface: WKInterfaceSKScene!

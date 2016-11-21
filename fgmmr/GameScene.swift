@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-class GameScene: SKScene, UIGestureRecognizerDelegate {
+class GameScene: SKScene, UIGestureRecognizerDelegate, GravitySystemCollisionDelegate {
 
     var centerOnLargestMass = false
     
@@ -16,7 +16,13 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     let gravitySystem = GravitySystem()
     var forceTouch = false
     
+    let smallVibe = UIImpactFeedbackGenerator(style: .light)
+    let medVibe = UIImpactFeedbackGenerator(style: .medium)
+    let bigVibe = UIImpactFeedbackGenerator(style: .heavy)
+    
     override func didMove(to view: SKView) {
+        
+        gravitySystem.collisionDelegate = self
         
         forceTouch = view.traitCollection.forceTouchCapability == .available
         
@@ -48,6 +54,23 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         newPlanetPan.delegate = self
         panny.delegate = self
         pinchy.delegate = self
+    }
+    
+    func collisionDetected(impactMass: CGFloat) {
+        
+        switch impactMass {
+        case 0...100:
+            smallVibe.impactOccurred()
+            
+        case 100...150:
+            medVibe.impactOccurred()
+            
+        default:
+            bigVibe.impactOccurred()
+        }
+        
+        print(impactMass)
+        smallVibe.impactOccurred()
     }
     
     // Called before each frame is rendered

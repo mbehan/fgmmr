@@ -8,8 +8,13 @@
 
 import SpriteKit
 
+protocol GravitySystemCollisionDelegate {
+    func collisionDetected(impactMass : CGFloat)
+}
+
 class GravitySystem : SKNode {
     
+    var collisionDelegate : GravitySystemCollisionDelegate? = nil
     var drawTrails = true
     var collisionThreshold = CGFloat(2)
     var largestMass : Planet?
@@ -69,6 +74,7 @@ class GravitySystem : SKNode {
             for planet in newPlanets {
                 self.addChild(planet.node)
                 planets.append(planet)
+                collisionDelegate?.collisionDetected(impactMass: planet.mass)
             }
         }
         
