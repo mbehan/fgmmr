@@ -10,7 +10,7 @@ import WatchKit
 import Foundation
 
 
-class InterfaceController: WKInterfaceController {
+class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     var scene : GameScene!
 
@@ -43,9 +43,18 @@ class InterfaceController: WKInterfaceController {
         scene.handlePan(gesture:gesture)
     }
     
+    func crownDidRotate(_ crownSequencer: WKCrownSequencer?, rotationalDelta: Double) {
+        
+        scene.handleCrown(rotationalDelta: rotationalDelta)
+    }
+    
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
+        
+        self.crownSequencer.delegate = self
+        
+        self.crownSequencer.focus()
     }
     
     override func didDeactivate() {

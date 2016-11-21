@@ -48,6 +48,12 @@ class GameScene: SKScene {
     var locationOfTouchDown = CGPoint()
     var placerLine : SKShapeNode?
     
+    func handleCrown(rotationalDelta : Double) {
+        guard let camera = camera else {return}
+        
+        camera.setScale(camera.xScale + CGFloat(rotationalDelta))
+    }
+    
     func handlePan(gesture:WKPanGestureRecognizer) {
         
         var touchLocation = gesture.locationInObject()
