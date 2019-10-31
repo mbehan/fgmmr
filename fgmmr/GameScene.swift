@@ -10,7 +10,7 @@ import SpriteKit
 
 class GameScene: SKScene, UIGestureRecognizerDelegate, GravitySystemCollisionDelegate {
 
-    var centerOnLargestMass = false
+    var centerOnLargestMass = true
     
     let newPlanetPan = ForcePanGestureRecognizer()
     let gravitySystem = GravitySystem()
@@ -95,7 +95,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, GravitySystemCollisionDel
     var locationOfTouchDown = CGPoint()
     var placerLine : SKShapeNode?
     
-    func handleNewPlanetPan(gesture: ForcePanGestureRecognizer) {
+    @objc func handleNewPlanetPan(gesture: ForcePanGestureRecognizer) {
         
         var touchLocation = gesture.location(in: gesture.view)
         touchLocation = self.convertPoint(fromView: touchLocation)
@@ -146,7 +146,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, GravitySystemCollisionDel
     
     var cameraScaleAtStartOfPinch = CGFloat(1.0)
     
-    func handlePinch(gesture:UIPinchGestureRecognizer){
+    @objc func handlePinch(gesture:UIPinchGestureRecognizer){
         switch gesture.state {
         case .began:
             cameraScaleAtStartOfPinch = self.camera!.xScale
@@ -155,7 +155,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, GravitySystemCollisionDel
         }
     }
     
-    func handlePan(gesture:UIPanGestureRecognizer){
+    @objc func handlePan(gesture:UIPanGestureRecognizer){
         
         if gesture.state == .changed {
         

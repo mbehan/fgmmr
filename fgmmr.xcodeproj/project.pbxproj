@@ -263,11 +263,13 @@
 					A509A22B1DDB62C000E0BDA9 = {
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = UHN3X3E6BY;
+						LastSwiftMigration = 1010;
 						ProvisioningStyle = Automatic;
 					};
 					A54A84FA1DC3F2EB009046C5 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = UHN3X3E6BY;
+						DevelopmentTeam = 4LH2439X32;
+						LastSwiftMigration = 1010;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -442,7 +444,8 @@
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
@@ -459,7 +462,8 @@
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
@@ -560,12 +564,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = UHN3X3E6BY;
+				DEVELOPMENT_TEAM = 4LH2439X32;
 				INFOPLIST_FILE = fgmmr/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mbehan.fgmmr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -574,12 +579,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = UHN3X3E6BY;
+				DEVELOPMENT_TEAM = 4LH2439X32;
 				INFOPLIST_FILE = fgmmr/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mbehan.fgmmr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -594,6 +600,7 @@
 				A509A2421DDB62C000E0BDA9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A509A2451DDB62C000E0BDA9 /* Build configuration list for PBXNativeTarget "watchapp" */ = {
 			isa = XCConfigurationList;
@@ -602,6 +609,7 @@
 				A509A2401DDB62C000E0BDA9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A54A84F61DC3F2EB009046C5 /* Build configuration list for PBXProject "fgmmr" */ = {
 			isa = XCConfigurationList;
