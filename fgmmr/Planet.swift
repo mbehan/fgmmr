@@ -9,6 +9,8 @@
 import SpriteKit
 
 class Planet : Equatable {
+
+    static let radiusMassMultiplier = CGFloat(1000.0)
     
     let color = UIColor(red: CGFloat(drand48()), green: CGFloat(drand48()), blue: CGFloat(drand48()), alpha: 1.0)
     let node : SKNode
@@ -49,8 +51,8 @@ class Planet : Equatable {
     class func byColliding(_ planet1 : Planet, with planet2 : Planet) -> Planet {
         
         //calc the combined raduis by adding the volumes of the planets
-        let r1 = planet1.mass / 10.0
-        let r2 = planet2.mass / 10.0
+        let r1 = planet1.mass / radiusMassMultiplier
+        let r2 = planet2.mass / radiusMassMultiplier
         let newRadius = pow(pow(r1,3) + pow(r2,3), 1/3.0)
 
         let p1Mass = planet1.mass
