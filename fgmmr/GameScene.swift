@@ -24,7 +24,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, GravitySystemCollisionDel
         
         gravitySystem.collisionDelegate = self
         
-        forceTouch = view.traitCollection.forceTouchCapability == .available
+        //forceTouch = view.traitCollection.forceTouchCapability == .available
         
         self.addChild(gravitySystem)
         
