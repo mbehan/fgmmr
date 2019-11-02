@@ -36,7 +36,7 @@ class Planet : Equatable {
         let safeRadius = max(0.5,radius)
         let planet = SKShapeNode.init(circleOfRadius: safeRadius)
         let body = SKPhysicsBody(circleOfRadius: safeRadius)
-        body.mass = radius * 10.0
+        body.mass = radius * Planet.radiusMassMultiplier
         body.affectedByGravity = false //heh
         body.allowsRotation = false
         
@@ -57,14 +57,16 @@ class Planet : Equatable {
 
         let p1Mass = planet1.mass
         let p2Mass = planet2.mass
-        let reducingFactor = CGFloat(0.01) // lose a chunk of momentum in the collision
+        let reducingFactor = CGFloat(0.9) // lose a chunk of momentum in the collision
         let p1Factor = p1Mass * reducingFactor
         let p2Factor = p2Mass * reducingFactor
         
         let p1Velocity = planet1.node.physicsBody!.velocity
         let p2Velocity = planet2.node.physicsBody!.velocity
+
+        let newPlanetMass = newRadius * radiusMassMultiplier
         
-        let newVelocity = CGVector(dx: p1Factor * p1Velocity.dx + p2Factor * p2Velocity.dx, dy: p1Factor * p1Velocity.dy + p2Factor * p2Velocity.dy)
+        let newVelocity = CGVector(dx: (p1Factor * p1Velocity.dx + p2Factor * p2Velocity.dx) / newPlanetMass, dy: (p1Factor * p1Velocity.dy + p2Factor * p2Velocity.dy) / newPlanetMass)
         
         let newPlanet = Planet(radius: newRadius)
         newPlanet.node.position = CGPoint(x: (planet1.node.position.x + planet2.node.position.x) / 2.0, y:(planet1.node.position.y + planet2.node.position.y) / 2.0)
@@ -75,7 +77,7 @@ class Planet : Equatable {
     }
     
     class func applyGravitationalAttraction(between planet1:Planet, and planet2:Planet) {
-        let gravitationalConstant : CGFloat = 100.0 // is really 6.67408 × 10^-11, but then we'd need awfully large numbers for mass and then the distances would be way off ...
+        let gravitationalConstant : CGFloat = 0.0667408 // is really 6.67408 × 10^-11, but then we'd need awfully large numbers for mass and then the distances would be way off ...
         let offset = sub(a: planet1.node.position, b: planet2.node.position)
         let direction = normalize(a: offset)
         
