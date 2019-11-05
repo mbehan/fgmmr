@@ -10,7 +10,7 @@ import SpriteKit
 
 class GameScene: SKScene, UIGestureRecognizerDelegate, GravitySystemCollisionDelegate {
 
-    var centerOnLargestMass = true
+    var centerOnLargestMass = false
     
     let newPlanetPan = ForcePanGestureRecognizer()
     let gravitySystem = GravitySystem()
