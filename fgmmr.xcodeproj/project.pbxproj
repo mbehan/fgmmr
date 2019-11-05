@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -15,7 +15,7 @@
 		A509A2361DDB62C000E0BDA9 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A509A2351DDB62C000E0BDA9 /* GameScene.swift */; };
 		A509A2381DDB62C000E0BDA9 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A509A2371DDB62C000E0BDA9 /* ExtensionDelegate.swift */; };
 		A509A23A1DDB62C000E0BDA9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A509A2391DDB62C000E0BDA9 /* Assets.xcassets */; };
-		A509A23E1DDB62C000E0BDA9 /* watchapp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A509A2201DDB62C000E0BDA9 /* watchapp.app */; };
+		A509A23E1DDB62C000E0BDA9 /* watchapp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A509A2201DDB62C000E0BDA9 /* watchapp.app */; platformFilter = ios; };
 		A509A2471DDB630C00E0BDA9 /* GravitySystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5622F661DD66E20008B409E /* GravitySystem.swift */; };
 		A509A2481DDB631700E0BDA9 /* Planet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54A851A1DC908DC009046C5 /* Planet.swift */; };
 		A509A2491DDB637600E0BDA9 /* VectorMaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54A85181DC9024C009046C5 /* VectorMaths.swift */; };
@@ -86,6 +86,7 @@
 		A509A2371DDB62C000E0BDA9 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		A509A2391DDB62C000E0BDA9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A509A23B1DDB62C000E0BDA9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A50BC46B236D97F60039E992 /* fgmmr.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = fgmmr.entitlements; sourceTree = "<group>"; };
 		A54A84FB1DC3F2EB009046C5 /* fgmmr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = fgmmr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A54A84FE1DC3F2EB009046C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A54A85001DC3F2EB009046C5 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -165,6 +166,7 @@
 		A54A84FD1DC3F2EB009046C5 /* fgmmr */ = {
 			isa = PBXGroup;
 			children = (
+				A50BC46B236D97F60039E992 /* fgmmr.entitlements */,
 				A54A84FE1DC3F2EB009046C5 /* AppDelegate.swift */,
 				A54A85061DC3F2EB009046C5 /* GameViewController.swift */,
 				A54A851A1DC908DC009046C5 /* Planet.swift */,
@@ -257,18 +259,15 @@
 				TargetAttributes = {
 					A509A21F1DDB62C000E0BDA9 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = UHN3X3E6BY;
 						ProvisioningStyle = Automatic;
 					};
 					A509A22B1DDB62C000E0BDA9 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = UHN3X3E6BY;
 						LastSwiftMigration = 1010;
 						ProvisioningStyle = Automatic;
 					};
 					A54A84FA1DC3F2EB009046C5 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = 4LH2439X32;
 						LastSwiftMigration = 1010;
 						ProvisioningStyle = Automatic;
 					};
@@ -279,6 +278,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -364,6 +364,7 @@
 		};
 		A509A23D1DDB62C000E0BDA9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = A509A21F1DDB62C000E0BDA9 /* watchapp */;
 			targetProxy = A509A23C1DDB62C000E0BDA9 /* PBXContainerItemProxy */;
 		};
@@ -402,7 +403,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = UHN3X3E6BY;
+				DEVELOPMENT_TEAM = 4LH2439X32;
 				IBSC_MODULE = watchapp_Extension;
 				INFOPLIST_FILE = watchapp/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mbehan.fgmmr.watchkitapp;
@@ -420,7 +421,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = UHN3X3E6BY;
+				DEVELOPMENT_TEAM = 4LH2439X32;
 				IBSC_MODULE = watchapp_Extension;
 				INFOPLIST_FILE = watchapp/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mbehan.fgmmr.watchkitapp;
@@ -437,9 +438,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				DEVELOPMENT_TEAM = UHN3X3E6BY;
+				DEVELOPMENT_TEAM = 4LH2439X32;
 				INFOPLIST_FILE = "watchapp Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.mbehan.fgmmr.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
@@ -455,9 +460,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				DEVELOPMENT_TEAM = UHN3X3E6BY;
+				DEVELOPMENT_TEAM = 4LH2439X32;
 				INFOPLIST_FILE = "watchapp Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.mbehan.fgmmr.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
@@ -555,7 +564,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -564,11 +574,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = fgmmr/fgmmr.entitlements;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = 4LH2439X32;
 				INFOPLIST_FILE = fgmmr/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.mbehan.fgmmr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -579,11 +595,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = fgmmr/fgmmr.entitlements;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = 4LH2439X32;
 				INFOPLIST_FILE = fgmmr/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.mbehan.fgmmr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
