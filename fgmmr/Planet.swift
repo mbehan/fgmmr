@@ -9,8 +9,6 @@
 import SpriteKit
 
 class Planet : Equatable {
-
-    static let radiusMassMultiplier = CGFloat(1000.0)
     
     let color = UIColor(red: CGFloat(drand48()), green: CGFloat(drand48()), blue: CGFloat(drand48()), alpha: 1.0)
     let node : SKNode
@@ -36,7 +34,7 @@ class Planet : Equatable {
         let safeRadius = max(0.5,radius)
         let planet = SKShapeNode.init(circleOfRadius: safeRadius)
         let body = SKPhysicsBody(circleOfRadius: safeRadius)
-        body.mass = radius * Planet.radiusMassMultiplier
+        body.mass = radius
         body.affectedByGravity = false //heh
         body.allowsRotation = false
         
@@ -51,8 +49,8 @@ class Planet : Equatable {
     class func byColliding(_ planet1 : Planet, with planet2 : Planet) -> Planet {
         
         //calc the combined raduis by adding the volumes of the planets
-        let r1 = planet1.mass / radiusMassMultiplier
-        let r2 = planet2.mass / radiusMassMultiplier
+        let r1 = planet1.mass
+        let r2 = planet2.mass
         let newRadius = pow(pow(r1,3) + pow(r2,3), 1/3.0)
 
         let p1Mass = planet1.mass
@@ -64,7 +62,7 @@ class Planet : Equatable {
         let p1Velocity = planet1.node.physicsBody!.velocity
         let p2Velocity = planet2.node.physicsBody!.velocity
 
-        let newPlanetMass = newRadius * radiusMassMultiplier
+        let newPlanetMass = newRadius
         
         let newVelocity = CGVector(dx: (p1Factor * p1Velocity.dx + p2Factor * p2Velocity.dx) / newPlanetMass, dy: (p1Factor * p1Velocity.dy + p2Factor * p2Velocity.dy) / newPlanetMass)
         
@@ -77,7 +75,7 @@ class Planet : Equatable {
     }
     
     class func applyGravitationalAttraction(between planet1:Planet, and planet2:Planet) {
-        let gravitationalConstant : CGFloat = 0.0667408 // is really 6.67408 × 10^-11, but then we'd need awfully large numbers for mass and then the distances would be way off ...
+        let gravitationalConstant : CGFloat = 250 // is really 6.67408 × 10^-11, but then we'd need awfully large numbers for mass and then the distances would be way off ...
         let offset = sub(a: planet1.node.position, b: planet2.node.position)
         let direction = normalize(a: offset)
         
