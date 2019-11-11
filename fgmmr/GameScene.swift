@@ -23,7 +23,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, GravitySystemCollisionDel
     override func didMove(to view: SKView) {
         
         gravitySystem.collisionDelegate = self
-        
+        backgroundColor = .black
         //forceTouch = view.traitCollection.forceTouchCapability == .available
         
         self.addChild(gravitySystem)
