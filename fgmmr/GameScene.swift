@@ -14,7 +14,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, GravitySystemCollisionDel
     
     let newPlanetPan = ForcePanGestureRecognizer()
     let gravitySystem = GravitySystem()
-    var forceTouch = false
     
     let smallVibe = UIImpactFeedbackGenerator(style: .light)
     let medVibe = UIImpactFeedbackGenerator(style: .medium)
@@ -24,7 +23,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, GravitySystemCollisionDel
         
         gravitySystem.collisionDelegate = self
         backgroundColor = .black
-        //forceTouch = view.traitCollection.forceTouchCapability == .available
         
         self.addChild(gravitySystem)
         
@@ -83,7 +81,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, GravitySystemCollisionDel
         }
         
         // if we're mid new planet placement, update the indication of the new planet size
-        if let placerLine = placerLine, !forceTouch {
+        if let placerLine = placerLine {
             let durationOfPress = Date.timeIntervalSinceReferenceDate - timeAtTouchDown
             placerLine.lineWidth = CGFloat(durationOfPress)
         }
@@ -120,13 +118,9 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, GravitySystemCollisionDel
             placerLine!.alpha = 0.5
             self.addChild(placerLine!)
             
-            if forceTouch {
-                placerLine!.lineWidth = gesture.maxForce
-            }
-            
         case .ended, .failed:
             let durationOfPress = Date.timeIntervalSinceReferenceDate - timeAtTouchDown
-            let radiusOfNewPlanet = forceTouch ? (gesture.maxForce * 5.0) : CGFloat(durationOfPress * 5.0)
+            let radiusOfNewPlanet = CGFloat(durationOfPress * 5.0)
             
             let planet = Planet(radius:radiusOfNewPlanet)
             planet.node.position = touchLocation
