@@ -18,4 +18,8 @@ That is for every pair of nodes, apply a force to each one that is equal to the 
 
 There are some tweaks to the above formula to make the numbers a bit easier to deal with (i.e. smaller) and to make creating stable systems a bit easier, but sticking exactly to the formula above and plugging in some realistic numbers things work pretty much as you'd expect.
 
-In addition to simulating gravity, I'm also combining planets that pass close to each other and adding trails to trace their paths and giving new planets random colour. It all results in a surprisingly fun and addictive little toy so even if you're not interested in the code just build and run it on your iPhone (or watch, or Mac) and enjoy!
+In addition to simulating gravity, This sample also includes combining planets that pass close to each other and adding trails to trace their paths and giving new planets random colour.
+
+## SpriteKit Field Nodes
+
+Another approach is to use SpriteKit's field nodes. These are nodes that apply forces to other nodes that interact with them. On first look this seems to be exactly what we need and there's even specific gravity field nodes. In my experimenting with these though I could not get close to as good an effect as the approach outlined here.
